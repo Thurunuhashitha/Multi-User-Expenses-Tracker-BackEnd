@@ -8,7 +8,7 @@ function getConnection() {
             host: 'localhost',
             user: 'root',
             password: '2000kgT.',
-            database: 'multi-user-expensers-tracker'
+            database: 'multi_user_expense_tracker'
         });
 
         connection.connect(err => {
