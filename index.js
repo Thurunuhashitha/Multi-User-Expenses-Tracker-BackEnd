@@ -1,24 +1,26 @@
-const express = require('express'); 
-const cors = require('cors');
+const express = require('express')
+const cors = require('cors')
+const path = require('path')   // ✅ ADD THIS
 
-const app = express();
+const app = express()
 
 // 🔥 VERY IMPORTANT
-app.use(cors()); // allow all origins
- 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(cors())
 
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
 
-const authRoutes = require('./routes/authRoutes');
-app.use('/api/auth', authRoutes);
+// ✅ SERVE UPLOADED IMAGES
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')))
 
-const expensesRoutes = require('./routes/expensesRoutes');
-app.use('/api/expenses', expensesRoutes);
+// ROUTES
+const authRoutes = require('./routes/authRoutes')
+app.use('/api/auth', authRoutes)
 
+const expensesRoutes = require('./routes/expensesRoutes')
+app.use('/api/expenses', expensesRoutes)
 
-const PORT = process.env.PORT || 3000;
-
+const PORT = process.env.PORT || 3000
 app.listen(PORT, () => {
-    console.log(`Server running on http://localhost:${PORT}`);
-});
+    console.log(`Server running on http://localhost:${PORT}`)
+})
