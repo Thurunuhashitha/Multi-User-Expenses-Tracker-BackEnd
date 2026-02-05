@@ -40,4 +40,24 @@ const getAllExpenses = (req, res) => {
     );
 };
 
-module.exports = { createExpense, getAllExpenses };
+// Delete EXPENSES 
+const deleteExpenses = (req, res) => {
+    const expenseId = req.params.id;  // From URL 
+
+    connection.query(
+        'DELETE FROM expenses WHERE expense_id = ? ',
+        [expenseId],
+        (err, result) => {
+            if (err) return res.status(500).json({ error: err.message });
+
+            if (result.affectedRows === 0) {
+                return res.status(403).json({ message: 'Not authorized or expense not found' });
+            }
+
+            res.json({ message: 'Expense deleted successfully' });
+        }
+    );
+};
+
+
+module.exports = { createExpense, getAllExpenses, deleteExpenses };
