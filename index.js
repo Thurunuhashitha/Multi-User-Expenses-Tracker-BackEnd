@@ -1,20 +1,26 @@
-const express = require('express'); 
+const express = require('express')
+const cors = require('cors')
+const path = require('path')   // ✅ ADD THIS
 
-const app = express();
- 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+const app = express()
 
+// 🔥 VERY IMPORTANT
+app.use(cors())
 
-const authRoutes = require('./routes/authRoutes');
-app.use('/api/auth', authRoutes);
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
 
-const expensesRoutes = require('./routes/expensesRoutes');
-app.use('/api/expenses', expensesRoutes);
+// ✅ SERVE UPLOADED IMAGES
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')))
 
+// ROUTES
+const authRoutes = require('./routes/authRoutes')
+app.use('/api/auth', authRoutes)
 
-const PORT = process.env.PORT || 3000;
+const expensesRoutes = require('./routes/expensesRoutes')
+app.use('/api/expenses', expensesRoutes)
 
+const PORT = process.env.PORT || 3000
 app.listen(PORT, () => {
-    console.log(`Server running on http://localhost:${PORT}`);
-});
+    console.log(`Server running on http://localhost:${PORT}`)
+})
