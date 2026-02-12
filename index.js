@@ -1,19 +1,22 @@
 const express = require('express')
 const cors = require('cors')
-const path = require('path')   // ✅ ADD THIS
+const path = require('path')
 
 const app = express()
 
-// 🔥 VERY IMPORTANT
-app.use(cors())
+// ✅ Allow only your frontend domain
+app.use(cors({
+    origin: 'https://react.thurunu.me',
+    credentials: true
+}))
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
-// ✅ SERVE UPLOADED IMAGES
+// Serve uploaded images
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')))
 
-// ROUTES
+// Routes
 const authRoutes = require('./routes/authRoutes')
 app.use('/api/auth', authRoutes)
 
@@ -21,6 +24,8 @@ const expensesRoutes = require('./routes/expensesRoutes')
 app.use('/api/expenses', expensesRoutes)
 
 const PORT = process.env.PORT || 3000
-app.listen(PORT, () => {
-    console.log(`Server running on http://localhost:${PORT}`)
+
+// Better for VPS
+app.listen(PORT, '0.0.0.0', () => {
+    console.log(`Server running on port ${PORT}`)
 })
