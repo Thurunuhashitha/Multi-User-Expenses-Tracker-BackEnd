@@ -4,7 +4,7 @@ let connection;
 
 function getConnection() {
     if (!connection) {
-        connection = mysql.createConnection({
+        connection = mysql.createPool({
             host: 'localhost',
             user: 'root',
             password: '2000kgT.',
@@ -20,7 +20,7 @@ function getConnection() {
         });
     }
 
-    return connection; // always return it
+    return connection;
 }
 
 module.exports = { getConnection };
