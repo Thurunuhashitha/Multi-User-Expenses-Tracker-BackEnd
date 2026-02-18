@@ -1,47 +1,21 @@
-name: Deploy Backend to EC2
-
-on:
-  push:
-    branches:
-      - main
-
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Setup SSH
-        shell: bash
-        run: |
-          set -e
-          mkdir -p ~/.ssh
-          chmod 700 ~/.ssh
-
-          echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/id_ed25519
-          chmod 600 ~/.ssh/id_ed25519
-
-          echo "${{ secrets.EC2_KNOWN_HOSTS }}" >> ~/.ssh/known_hosts
-          chmod 600 ~/.ssh/known_hosts
-
       - name: Deploy to EC2 and Restart PM2
         shell: bash
         run: |
           set -e
 
-          ssh -i ~/.ssh/id_ed25519 -o IdentitiesOnly=yes ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
+          ssh -i ~/.ssh/id_ed25519 -o IdentitiesOnly=yes ubuntu@123.45.67.89 << EOF
             set -e
-
             echo "🚀 Starting deployment..."
 
-            # Load nvm (so node/npm exist in non-interactive shell)
-            export NVM_DIR="$HOME/.nvm"
-            if [ -s "$NVM_DIR/nvm.sh" ]; then
-              . "$NVM_DIR/nvm.sh"
+            # Load nvm
+            export NVM_DIR="\$HOME/.nvm"
+            if [ -s "\$NVM_DIR/nvm.sh" ]; then
+              . "\$NVM_DIR/nvm.sh"
               nvm use --lts >/dev/null 2>&1 || true
             fi
 
-            echo "Node: $(command -v node || echo 'not found')"
-            echo "NPM:  $(command -v npm  || echo 'not found')"
+            echo "Node: \$(command -v node || echo 'not found')"
+            echo "NPM:  \$(command -v npm  || echo 'not found')"
 
             cd /home/ubuntu/backend/Multi-User-Expenses-Tracker-BackEnd
 
