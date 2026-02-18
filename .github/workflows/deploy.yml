@@ -10,8 +10,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Checkout the repository
-      - name: Checkout code
+      # Step 1: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v3
 
       # Step 2: Set up SSH
@@ -23,11 +23,11 @@ jobs:
           mkdir -p ~/.ssh
           chmod 700 ~/.ssh
 
-          # Add private key from secrets
+          # Add private key from GitHub secrets
           echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/id_ed25519
           chmod 600 ~/.ssh/id_ed25519
 
-          # Add known host key from secrets
+          # Add EC2 host key from GitHub secrets
           echo "${{ secrets.EC2_KNOWN_HOSTS }}" > ~/.ssh/known_hosts
           chmod 644 ~/.ssh/known_hosts
 
@@ -36,7 +36,7 @@ jobs:
         shell: bash
         run: |
           set -e
-          echo "Testing SSH connection..."
+          echo "Testing SSH connection to EC2..."
           ssh -i ~/.ssh/id_ed25519 -o IdentitiesOnly=yes ubuntu@13.233.108.0 "echo SSH connection OK"
 
       # Step 4: Deploy code and restart PM2
@@ -59,6 +59,7 @@ jobs:
             echo "Node: \$(command -v node || echo 'not found')"
             echo "NPM:  \$(command -v npm  || echo 'not found')"
 
+            # Go to backend directory
             cd /home/ubuntu/backend/Multi-User-Expenses-Tracker-BackEnd
 
             echo "📥 Pulling latest code..."
