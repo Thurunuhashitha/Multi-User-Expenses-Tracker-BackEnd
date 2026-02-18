@@ -27,7 +27,7 @@ jobs:
         shell: bash
         run: |
           set -e
-          ssh -i ~/.ssh/id_ed25519 -o IdentitiesOnly=yes ubuntu@123.45.67.89 << EOF
+          ssh -i ~/.ssh/id_ed25519 -o IdentitiesOnly=yes ubuntu@13.233.108.0 << EOF
             set -e
             echo "🚀 Starting deployment..."
 
