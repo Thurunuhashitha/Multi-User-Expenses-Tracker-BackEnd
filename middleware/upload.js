@@ -22,3 +22,5 @@ const fileFilter = (req, file, cb) => {
 const upload = multer({ storage, fileFilter });
 
 module.exports = upload;
+
+//uplode wenna oona widiya saha kothanada kiyana eewa. like jpg dapng da siz eka 
